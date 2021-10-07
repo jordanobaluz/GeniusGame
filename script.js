@@ -1,15 +1,18 @@
-// ordens aleatórias que vão ascender
 let order = [];
 let clickedOrder = [];
-let score = 0; // conta o score da pessoa, pois ela perde quando zera
+let score = 0;
 
-//0 - verde, 1 - vermelho, 2 - amarelo, 3 - azul
+//0 - verde
+//1 - vermelho
+//2 - amarelo
+//3 - azul
 
 const blue = document.querySelector('.blue');
 const red = document.querySelector('.red');
 const green = document.querySelector('.green');
 const yellow = document.querySelector('.yellow');
 
+//cria ordem aletoria de cores
 let shuffleOrder = () => {
     let colorOrder = Math.floor(Math.random() * 4);
     order[order.length] = colorOrder;
@@ -17,8 +20,7 @@ let shuffleOrder = () => {
 
     for (let i in order) {
         let elementColor = createColorElement(order[i]);
-        lightColor(elementColor, Number(i) + 1)
-        // Number(i)+1 traz um numero mais 1 para poder existir na lista de cores
+        lightColor(elementColor, Number(i) + 1);
     }
 }
 
@@ -26,25 +28,24 @@ let shuffleOrder = () => {
 let lightColor = (element, number) => {
     number = number * 500;
     setTimeout(() => {
-        element.classList.add('selected'); //atribuindo a classe selected ao element
-        //remove a cor após um tempo
+        element.classList.add('selected');
         setTimeout(() => {
             element.classList.remove('selected');
-        }, 500)
+        }, 500);
     }, number - 250);
 }
 
-//checa se foi clicado o botão correto igual ao gerado
+//checa se os botoes clicados são os mesmos da ordem gerada no jogo
 let checkOrder = () => {
     for (let i in clickedOrder) {
-        if (clickedOrder[i] !== order[i]) {
+        if (clickedOrder[i] != order[i]) {
             gameOver();
             break;
         }
-        if (clickedOrder.length == order.length) {
-            alert(`Pontuação: ${score}\n Você acertou! Iniciando próximo nível`);
-            nextLevel();
-        }
+    }
+    if (clickedOrder.length == order.length) {
+        alert(`Pontuação: ${score}\nVocê acertou! Iniciando próximo nível!`);
+        nextLevel();
     }
 }
 
@@ -55,9 +56,8 @@ let click = (color) => {
 
     setTimeout(() => {
         createColorElement(color).classList.remove('selected');
-        checkOrder(); // para conferir se foi clicado correto
+        checkOrder();
     }, 250);
-
 }
 
 //funcao que retorna a cor
@@ -81,31 +81,27 @@ let nextLevel = () => {
 
 //funcao para game over
 let gameOver = () => {
-    alert(`Pontuação: ${score}\n Você perdeu o jogo!\n Clique em OK para recomeçar`)
+    alert(`Pontuação: ${score}!\nVocê perdeu o jogo!\nClique em OK para iniciar um novo jogo`);
     order = [];
     clickedOrder = [];
 
     playGame();
 }
 
-//funcao para iniciar novo jogo
+//funcao de inicio do jogo
 let playGame = () => {
+    alert('Bem vindo ao Gênesis! Iniciando novo jogo!');
     score = 0;
-    alert(`Bem vindo ao Gênesis! Iniciando o jogo\n Pontuação: ${score}`);
 
     nextLevel();
 }
 
-// green.addEventListener('click', click(0));
-// red.addEventListener('click', click(1));
-// yellow.addEventListener('click', click(2));
-// blue.addEventListener('click', click(3));
-
 //eventos de clique para as cores
-green.onClick = () => click(0);
-red.onClick = () => click(1);
-yellow.onClick = () => click(2);
-blue.onClick = () => click(3);
+green.onclick = () => click(0);
+red.onclick = () => click(1);
+yellow.onclick = () => click(2);
+blue.onclick = () => click(3);
+
 
 //inicio do jogo
 playGame();
